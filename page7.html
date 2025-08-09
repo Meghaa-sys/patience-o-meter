@@ -51,10 +51,44 @@
     #overlay button:hover {
       background: #0b7dda;
     }
+    /* On-screen controls container */
+    #controls {
+      margin-top: 15px;
+      display: flex;
+      gap: 20px;
+    }
+    /* Style arrow buttons */
+    .arrow-btn {
+      background: #2196f3;
+      border: none;
+      color: white;
+      font-size: 28px;
+      width: 60px;
+      height: 60px;
+      border-radius: 12px;
+      cursor: pointer;
+      user-select: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: background 0.3s ease;
+    }
+    .arrow-btn:hover {
+      background: #0b7dda;
+    }
+    .arrow-btn:active {
+      background: #0a5dad;
+      transform: scale(0.95);
+    }
   </style>
 </head>
 <body>
   <canvas id="gameCanvas" width="800" height="600"></canvas>
+
+  <div id="controls">
+    <button id="upBtn" class="arrow-btn" aria-label="Move Up">&#8593;</button>
+    <button id="downBtn" class="arrow-btn" aria-label="Move Down">&#8595;</button>
+  </div>
 
   <div id="overlay">
     <h1>You Failed!</h1>
@@ -69,6 +103,9 @@
     const overlay = document.getElementById("overlay");
     const retryBtn = document.getElementById("retryBtn");
     const nextBtn = document.getElementById("nextBtn");
+
+    const upBtn = document.getElementById("upBtn");
+    const downBtn = document.getElementById("downBtn");
 
     const chicken = {
       x: canvas.width / 2 - 15,
@@ -85,6 +122,7 @@
     const numLanes = Math.floor(canvas.height / laneHeight);
 
     let gameOver = false;
+    const step = 30;
 
     for (let i = 0; i < numLanes; i++) {
       lanes.push([]);
@@ -122,7 +160,7 @@
       // Spawn normal cars
       for (let i = 1; i < numLanes - 1; i++) {
         if (Math.random() < 0.02) {
-          spawnCar(i, "right", carSpeed); // normal direction only
+          spawnCar(i, "right", carSpeed);
         }
       }
 
@@ -141,7 +179,6 @@
           }
         });
 
-        // Remove cars out of screen
         lanes[laneIndex] = lane.filter(car => car.x > -car.width && car.x < canvas.width + car.width);
       });
 
@@ -154,7 +191,6 @@
             chicken.y < car.y + car.height &&
             chicken.y + chicken.height > car.y
           ) {
-            // Chicken hit - stop the game and show fail overlay
             gameOver = true;
             overlay.style.display = "block";
           }
@@ -199,18 +235,31 @@
       }
     }
 
-    // Controls
+    // Controls: Only Up and Down arrows to move chicken vertically
     window.addEventListener("keydown", e => {
       if(gameOver) return;
-      const step = 30;
-      if (e.key === "ArrowUp") chicken.y -= step;
-      if (e.key === "ArrowDown") chicken.y += step;
-      if (e.key === "ArrowLeft") chicken.x -= step;
-      if (e.key === "ArrowRight") chicken.x += step;
+      if (e.key === "ArrowUp") moveChickenUp();
+      if (e.key === "ArrowDown") moveChickenDown();
+    });
 
-      // Boundaries
-      chicken.x = Math.max(0, Math.min(chicken.x, canvas.width - chicken.width));
-      chicken.y = Math.max(0, Math.min(chicken.y, canvas.height - chicken.height));
+    // Functions to move chicken up/down safely
+    function moveChickenUp() {
+      chicken.y -= step;
+      if(chicken.y < 0) chicken.y = 0;
+    }
+    function moveChickenDown() {
+      chicken.y += step;
+      if(chicken.y > canvas.height - chicken.height) chicken.y = canvas.height - chicken.height;
+    }
+
+    // On-screen button controls
+    upBtn.addEventListener("click", () => {
+      if(gameOver) return;
+      moveChickenUp();
+    });
+    downBtn.addEventListener("click", () => {
+      if(gameOver) return;
+      moveChickenDown();
     });
 
     retryBtn.addEventListener("click", () => {
