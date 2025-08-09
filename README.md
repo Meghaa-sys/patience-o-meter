@@ -60,7 +60,7 @@ For Hardware:
 ### Implementation
 For Software:
 # Installation
-[commands]
+[commands] using git
 
 # Run
 [commands]
@@ -81,6 +81,8 @@ For Software:
   DESCRIPTION:
   The website begins with a login page which seems normal at first but as you type it starts typing backwards and finally when you just want to hit the submit button it keeps flying for some time mocking the user.In the next page we have to accept cookies,when accepted it mocks the diabetes of user...following a green screen that is very bright like your display is damaged...then comes a game mania where the real fun begins...the games in these can never be won..somehow the computer bot playing against us defeats us which makes the user go make-which is our objective ;)
   THIS IS OUR WEBSITE : https://meghaa-sys.github.io/patience-o-meter/index.html ----check it for more details
+
+
 # Diagrams
 ![Workflow](Add your workflow/architecture diagram here)
 *Add caption explaining your workflow*
@@ -108,15 +110,15 @@ For Hardware:
 # Video
 [Add your demo video link here]
 https://drive.google.com/file/d/1cmcjux00sIUzK5pgfntHbdEfzynAPrry/view?usp=drivesdk
-*Explain what the video demonstrates*
+
 
 # Additional Demos
 [Add any extra demo materials/links] website link:    https://meghaa-sys.github.io/patience-o-meter/index.html
 
 ## Team Contributions
-- [Name 1]: [Specific contributions]
-- [Name 2]: [Specific contributions]
-- [Name 3]: [Specific contributions]
+- [Name 1]: MEGHA SURESH
+- [Name 2]: KARTHIK CK
+- 
 
 ---
 Made with ❤️ at TinkerHub Useless Projects 
