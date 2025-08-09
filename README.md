@@ -70,6 +70,17 @@ For Software:
 
 # Screenshots (Add at least 3)
 <img width="3188" height="1202" alt="frame (3)" src="https://github.com/Meghaa-sys/patience-o-meter/blob/master/readme/WhatsApp%20Image%202025-08-09%20at%2017.15.29_5d045897.jpg" />
+<img width="3188" height="1202" alt="frame (3)" src="https://github.com/Meghaa-sys/patience-o-meter/blob/master/readme/WhatsApp%20Image%202025-08-09%20at%2017.15.30_1d06a3a7.jpg" />
+<img width="3188" height="1202" alt="frame (3)" src="https://github.com/Meghaa-sys/patience-o-meter/blob/master/readme/WhatsApp%20Image%202025-08-09%20at%2017.15.30_2198f913.jpg" />
+<img width="3188" height="1202" alt="frame (3)" src="https://github.com/Meghaa-sys/patience-o-meter/blob/master/readme/WhatsApp%20Image%202025-08-09%20at%2017.15.31_db67bb98.jpg" />
+<img width="3188" height="1202" alt="frame (3)" src="https://github.com/Meghaa-sys/patience-o-meter/blob/master/readme/WhatsApp%20Image%202025-08-09%20at%2017.15.32_11b4375f.jpg" 
+  <img width="3188" height="1202" alt="frame (3)" src="https://github.com/Meghaa-sys/patience-o-meter/blob/master/readme/WhatsApp%20Image%202025-08-09%20at%2017.15.32_3976b23f.jpg" />
+  <img width="3188" height="1202" alt="frame (3)" src="https://github.com/Meghaa-sys/patience-o-meter/blob/master/readme/WhatsApp%20Image%202025-08-09%20at%2017.15.33_0d23d6c5.jpg" />
+  <img width="3188" height="1202" alt="frame (3)" src="https://github.com/Meghaa-sys/patience-o-meter/blob/master/readme/WhatsApp%20Image%202025-08-09%20at%2017.15.34_865ba9fb.jpg" />
+  <img width="3188" height="1202" alt="frame (3)" src="https://github.com/Meghaa-sys/patience-o-meter/blob/master/readme/WhatsApp%20Image%202025-08-09%20at%2017.15.34_b9a60cad.jpg" />
+  DESCRIPTION:
+  The website begins with a login page which seems normal at first but as you type it starts typing backwards and finally when you just want to hit the submit button it keeps flying for some time mocking the user.In the next page we have to accept cookies,when accepted it mocks the diabetes of user...following a green screen that is very bright like your display is damaged...then comes a game mania where the real fun begins...the games in these can never be won..somehow the computer bot playing against us defeats us which makes the user go make-which is our objective ;)
+  
 # Diagrams
 ![Workflow](Add your workflow/architecture diagram here)
 *Add caption explaining your workflow*
