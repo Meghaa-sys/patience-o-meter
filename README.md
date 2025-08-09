@@ -1,7 +1,7 @@
 <img width="3188" height="1202" alt="frame (3)" src="https://github.com/user-attachments/assets/517ad8e9-ad22-457d-9538-a9e62d137cd7" />
 
 
-# [Project Name] 🎯
+# PATIENCE-O-METER 🎯
 
 
 ## Basic Details
@@ -52,18 +52,13 @@ For Software:
 - [Tools used]-  vs code for coding
 - git&git hub for version control and repository hosting
 
-For Hardware:
-- [List main components]
-- [List specifications]
-- [List tools required]
 
 ### Implementation
 For Software:
 # Installation
-[commands] using git
+ using git and browser
 
-# Run
-[commands]
+
 
 ### Project Documentation
 For Software:
@@ -83,37 +78,13 @@ For Software:
   THIS IS OUR WEBSITE : https://meghaa-sys.github.io/patience-o-meter/index.html ----check it for more details
 
 
-# Diagrams
-![Workflow](Add your workflow/architecture diagram here)
-*Add caption explaining your workflow*
-
-For Hardware:
-
-# Schematic & Circuit
-![Circuit](Add your circuit diagram here)
-*Add caption explaining connections*
-
-![Schematic](Add your schematic diagram here)
-*Add caption explaining the schematic*
-
-# Build Photos
-![Components](Add photo of your components here)
-*List out all components shown*
-
-![Build](Add photos of build process here)
-*Explain the build steps*
-
-![Final](Add photo of final product here)
-*Explain the final build*
-
 ### Project Demo
 # Video
-[Add your demo video link here]
 https://drive.google.com/file/d/1cmcjux00sIUzK5pgfntHbdEfzynAPrry/view?usp=drivesdk
 
 
 # Additional Demos
-[Add any extra demo materials/links] website link:    https://meghaa-sys.github.io/patience-o-meter/index.html
+ website link:    https://meghaa-sys.github.io/patience-o-meter/index.html
 
 ## Team Contributions
 - [Name 1]: MEGHA SURESH
