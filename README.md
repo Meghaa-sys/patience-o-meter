@@ -69,9 +69,7 @@ For Software:
 For Software:
 
 # Screenshots (Add at least 3)
-<img width="3188" height="1202" alt="frame (3)" src="[https://github.com/user-attachments/assets/517ad8e9-ad22-457d-9538-a9e62d137cd7](https://github.com/Meghaa-sys/patience-o-meter/blob/master/readme/WhatsApp%20Image%202025-08-09%20at%2017.15.29_5d045897.jpg)" />
-
-
+<img width="3188" height="1202" alt="frame (3)" src="https://github.com/Meghaa-sys/patience-o-meter/blob/master/readme/WhatsApp%20Image%202025-08-09%20at%2017.15.29_5d045897.jpg" />
 # Diagrams
 ![Workflow](Add your workflow/architecture diagram here)
 *Add caption explaining your workflow*
