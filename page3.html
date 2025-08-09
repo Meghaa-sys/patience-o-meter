@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Patience-o-Meter — Glitch Display</title>
+<style>
+  html, body {
+    margin: 0; padding: 0; height: 100%;
+    background-color: #020; /* dark green base */
+    overflow: hidden;
+  }
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #glitchScreen {
+    position: fixed;
+    top:0; left:0; right:0; bottom:0;
+    background-color: #0a0; /* bright green */
+    animation: flicker 0.1s infinite alternate;
+    z-index: 9998;
+  }
+
+  @keyframes flicker {
+    0%   { opacity: 1; filter: brightness(1.2) contrast(1.5) saturate(2); }
+    50%  { opacity: 0.6; filter: brightness(0.8) contrast(1) saturate(0.8); }
+    100% { opacity: 1; filter: brightness(1.2) contrast(1.5) saturate(2); }
+  }
+
+  #exitContainer {
+    display: none;
+    position: fixed;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    background: #111;
+    padding: 30px 40px;
+    border-radius: 12px;
+    box-shadow: 0 0 20px #0f0;
+    color: #0f0;
+    text-align: center;
+    z-index: 9999;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  #exitBtn {
+    margin-top: 20px;
+    padding: 12px 24px;
+    font-size: 18px;
+    background-color: #0f0;
+    border: none;
+    border-radius: 8px;
+    color: #020;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  #exitBtn:hover {
+    background-color: #bfb;
+  }
+</style>
+</head>
+<body>
+
+<div id="glitchScreen"></div>
+
+<div id="exitContainer">
+  <div>Display error detected. Please press exit to continue.</div>
+  <button id="exitBtn">Exit</button>
+</div>
+
+<script>
+  // After 6 seconds, show the exit popup
+  setTimeout(() => {
+    document.getElementById('exitContainer').style.display = 'block';
+  }, 6000);
+
+  document.getElementById('exitBtn').addEventListener('click', () => {
+    window.location.href = 'page4.html';  // redirect to page4
+  });
+</script>
+
+</body>
+</html>

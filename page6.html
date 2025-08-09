@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Tic Tac Toe</title>
+<style>
+  body {
+    background: #ffffff;
+    font-family: Arial, Helvetica, sans-serif;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    min-height:100vh;
+    margin:0;
+    position: relative;
+  }
+  .container {
+    text-align:center;
+    width:360px;
+    position: relative;
+    z-index: 1;
+  }
+  h1 { margin: 8px 0 12px; color:#111; }
+  #board {
+    display:grid;
+    grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+    gap:8px;
+    margin: 0 auto;
+    width: 320px;
+    height: 320px;
+  }
+  .cell {
+    background: #f6f6f6;
+    border-radius:8px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:56px;
+    cursor:pointer;
+    user-select:none;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+  }
+  .cell.taken { cursor:default; opacity:0.95; }
+  .status { margin-top:12px; font-weight:600; color:#333; }
+  .controls { margin-top:12px; display:flex; gap:8px; justify-content:center; }
+  button { padding:8px 12px; border-radius:8px; border: none; background:#2196f3; color:#fff; cursor:pointer; }
+  .hidden { display:none; }
+  .win-line { background: linear-gradient(90deg, rgba(33,150,243,0.12), rgba(33,150,243,0.06)); }
+  
+  /* Next button default style (small & fixed) */
+  #nextBtn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    display: none;
+    background: #4caf50;
+    padding: 4px 8px;
+    border-radius: 6px;
+    border: none;
+    color: white;
+    font-size: 0.8em;
+    cursor: default;
+    user-select: none;
+    transition: all 0.3s ease;
+  }
+  #nextBtn.enabled {
+    cursor: pointer;
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <h1>Tic Tac Toe</h1>
+    <div id="board" aria-live="polite"></div>
+    <div class="status" id="status">Your turn — play X</div>
+    <div class="controls">
+      <button id="restartBtn">Restart</button>
+    </div>
+  </div>
+
+  <button id="nextBtn" disabled>Next</button>
+
+<script>
+const WIN_LINES = [
+  [0,1,2],[3,4,5],[6,7,8],
+  [0,3,6],[1,4,7],[2,5,8],
+  [0,4,8],[2,4,6]
+];
+
+const boardEl = document.getElementById('board');
+const statusEl = document.getElementById('status');
+const restartBtn = document.getElementById('restartBtn');
+const nextBtn = document.getElementById('nextBtn');
+
+let cells = [];
+let board = Array(9).fill('');
+let humanMoves = 0;
+let gameOver = false;
+
+function buildBoard(){
+  boardEl.innerHTML = '';
+  cells = [];
+  for(let i=0;i<9;i++){
+    const c = document.createElement('div');
+    c.className = 'cell';
+    c.dataset.index = i;
+    c.addEventListener('click', ()=> onHumanPlay(i));
+    boardEl.appendChild(c);
+    cells.push(c);
+  }
+  resetState();
+}
+
+function resetState(){
+  board = Array(9).fill('');
+  humanMoves = 0;
+  gameOver = false;
+  statusEl.textContent = "Your turn — play X";
+  render();
+
+  nextBtn.style.display = 'none';
+  nextBtn.disabled = true;
+  nextBtn.classList.remove('enabled');
+  nextBtn.style.cursor = 'default';
+}
+
+function render(){
+  for(let i=0;i<9;i++){
+    cells[i].textContent = board[i];
+    if(board[i]) cells[i].classList.add('taken'); else cells[i].classList.remove('taken');
+  }
+}
+
+function checkWinState(b){
+  for(const line of WIN_LINES){
+    const [a,b1,c] = line;
+    if(b[a] && b[a] === b[b1] && b[a] === b[c]) return { player: b[a], line };
+  }
+  return null;
+}
+
+function onHumanPlay(idx){
+  if(gameOver) return;
+  if(board[idx]) return;
+  board[idx] = 'X';
+  humanMoves++;
+  render();
+
+  const maybeWin = checkWinState(board);
+  if(maybeWin && maybeWin.player === 'X'){
+    endGame('X', maybeWin.line);
+    return;
+  }
+
+  if(humanMoves === 1){
+    setTimeout(()=> computerFirstMove(), 260);
+    return;
+  }
+
+  if(humanMoves === 2){
+    setTimeout(()=> computerDoubleWin(), 300);
+    return;
+  }
+
+  setTimeout(()=> normalComputerMove(), 220);
+}
+
+function computerFirstMove(){
+  if(gameOver) return;
+  const center = 4;
+  if(!board[center]){
+    board[center] = 'O';
+    render();
+    const w = checkWinState(board);
+    if(w && w.player === 'O') endGame('O', w.line);
+    return;
+  }
+  const corners = [0,2,6,8];
+  for(const c of corners) if(!board[c]) { board[c]='O'; render(); return; }
+  for(let i=0;i<9;i++) if(!board[i]) { board[i]='O'; render(); return; }
+}
+
+function computerDoubleWin(){
+  if(gameOver) return;
+
+  function lineInfo(line){
+    const vals = line.map(i => board[i]);
+    const oCount = vals.filter(v => v==='O').length;
+    const xCount = vals.filter(v => v==='X').length;
+    const empties = line.filter(i => board[i]==='');
+    return { oCount, xCount, empties };
+  }
+
+  for(const line of WIN_LINES){
+    const info = lineInfo(line);
+    if(info.xCount === 0 && info.empties.length >= 2){
+      const [a,b] = info.empties;
+      board[a] = 'O';
+      board[b] = 'O';
+      render();
+      const w = checkWinState(board);
+      if(w) { endGame('O', w.line); return; }
+    }
+  }
+
+  for(const line of WIN_LINES){
+    const info = lineInfo(line);
+    if(info.xCount === 0 && info.oCount === 1 && info.empties.length === 2){
+      const [a,b] = info.empties;
+      board[a] = 'O';
+      board[b] = 'O';
+      render();
+      const w = checkWinState(board);
+      if(w) { endGame('O', w.line); return; }
+    }
+  }
+
+  let emptiesAll = [];
+  for(let i=0;i<9;i++) if(board[i]==='') emptiesAll.push(i);
+  if(emptiesAll.length >= 2){
+    board[emptiesAll[0]] = 'O';
+    board[emptiesAll[1]] = 'O';
+    render();
+    const w = checkWinState(board);
+    if(w) { endGame('O', w.line); return; }
+  }
+
+  normalComputerMove();
+}
+
+function normalComputerMove(){
+  if(gameOver) return;
+  for(let i=0;i<9;i++){
+    if(board[i]===''){
+      board[i] = 'O';
+      if(checkWinState(board)){
+        render(); endGame('O', checkWinState(board).line); return;
+      }
+      board[i] = '';
+    }
+  }
+  for(let i=0;i<9;i++){
+    if(board[i]===''){
+      board[i] = 'X';
+      if(checkWinState(board)){
+        board[i] = 'O';
+        render();
+        return;
+      }
+      board[i] = '';
+    }
+  }
+  if(board[4]===''){ board[4] = 'O'; render(); return; }
+  const corners = [0,2,6,8];
+  for(const c of corners) if(board[c]===''){ board[c]='O'; render(); return; }
+  for(let i=0;i<9;i++) if(board[i]===''){ board[i] = 'O'; render(); return; }
+}
+
+function endGame(winner, line){
+  gameOver = true;
+  if(line){
+    for(const idx of line) cells[idx].classList.add('win-line');
+  }
+  if(winner === 'O'){
+    statusEl.textContent = "Computer wins.";
+    setTimeout(()=> alert('Computer wins — try again.'), 250);
+  } else if(winner === 'X'){
+    statusEl.textContent = "You win!";
+    setTimeout(()=> alert('You win!'), 250);
+  } else {
+    statusEl.textContent = "Draw";
+  }
+
+  // Show small Next button (disabled) fixed bottom-right for 3 seconds
+  nextBtn.style.display = 'inline-block';
+  nextBtn.disabled = true;
+  nextBtn.classList.remove('enabled');
+
+  setTimeout(() => {
+    nextBtn.disabled = false;
+    nextBtn.classList.add('enabled');
+  }, 3000);
+}
+
+nextBtn.addEventListener('click', () => {
+  if (nextBtn.disabled) return;
+  window.location.href = 'page7.html';
+});
+
+restartBtn.addEventListener('click', ()=> {
+  for(const c of cells) c.classList.remove('win-line');
+  resetState();
+});
+
+(function init(){
+  buildBoard();
+})();
+</script>
+</body>
+</html>

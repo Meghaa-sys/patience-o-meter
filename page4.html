@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Game Mania — Loading</title>
+<style>
+  body, html {
+    height: 100%;
+    margin: 0; padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: #0b1220;
+    color: #eee;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  h1 {
+    font-size: 2.5rem;
+    margin-bottom: 40px;
+    text-align: center;
+  }
+  .loading-container {
+    width: 80%;
+    max-width: 600px;
+    background: #16202b;
+    border-radius: 12px;
+    box-shadow: 0 0 20px #2b3a56;
+    padding: 25px;
+  }
+  .progress-bar-bg {
+    width: 100%;
+    height: 30px;
+    background: #0b1220;
+    border-radius: 15px;
+    overflow: hidden;
+    margin-bottom: 15px;
+    box-shadow: inset 0 0 5px #123456aa;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #4caf50, #81c784);
+    border-radius: 15px 0 0 15px;
+    transition: width 0.1s ease-out;
+    box-shadow: 0 0 12px #4caf50aa;
+  }
+  .loading-text {
+    font-size: 1.2rem;
+    text-align: center;
+    margin-bottom: 15px;
+  }
+  .error-text {
+    font-size: 1.8rem;
+    color: #e74c3c;
+    text-align: center;
+    font-weight: bold;
+    display: none;
+    animation: flicker 0.3s infinite alternate;
+  }
+
+  @keyframes flicker {
+    0% {opacity: 1;}
+    100% {opacity: 0.3;}
+  }
+</style>
+</head>
+<body>
+
+  <h1>Game Mania</h1>
+
+  <div class="loading-container">
+    <div class="loading-text" id="loadingText">Loading... 0%</div>
+    <div class="progress-bar-bg">
+      <div class="progress-bar-fill" id="progressBar"></div>
+    </div>
+    <div class="error-text" id="errorText">ERROR</div>
+  </div>
+
+<script>
+  const progressBar = document.getElementById('progressBar');
+  const loadingText = document.getElementById('loadingText');
+  const errorText = document.getElementById('errorText');
+
+  let progress = 0;
+  const loadingDuration = 5000; // 5 seconds for full load
+  const intervalTime = 50; // update every 50ms
+  const increments = loadingDuration / intervalTime;
+  const incrementValue = 100 / increments;
+
+  function startLoading() {
+    progress = 0;
+    loadingText.style.display = 'block';
+    errorText.style.display = 'none';
+    progressBar.style.background = 'linear-gradient(90deg, #4caf50, #81c784)';
+    progressBar.style.boxShadow = '0 0 12px #4caf50aa';
+    progressBar.style.borderRadius = '15px 0 0 15px';
+
+    const loadingInterval = setInterval(() => {
+      progress += incrementValue;
+      if (progress >= 100) {
+        progress = 100;
+        clearInterval(loadingInterval);
+
+        // Reset bar to zero quickly before showing error
+        progressBar.style.transition = 'width 0.3s ease-out';
+        progressBar.style.width = '0%';
+
+        setTimeout(() => {
+          showError();
+        }, 350);
+
+        return;
+      }
+      progressBar.style.width = progress + '%';
+      loadingText.textContent = 'Loading... ' + Math.floor(progress) + '%';
+    }, intervalTime);
+  }
+
+  function showError() {
+    loadingText.style.display = 'none';
+    progressBar.style.width = '100%';
+    progressBar.style.backgroundColor = '#e74c3c';
+    progressBar.style.boxShadow = '0 0 20px #e74c3c';
+    errorText.style.display = 'block';
+
+    setTimeout(() => {
+      alert('Oops! A critical error has occurred. Redirecting...');
+      window.location.href = 'page5.html';  // Redirect to page 5
+    }, 2000);
+  }
+
+  startLoading();
+</script>
+
+</body>
+</html>

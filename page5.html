@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Ridiculous Guess The Image</title>
+<style>
+  body {
+    background: #222;
+    color: #eee;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 20px;
+  }
+  #partialImage, #fullImage {
+    max-width: 300px;
+    max-height: 200px;
+    margin: 20px auto;
+    border: 3px solid #eee;
+    border-radius: 8px;
+    display: block;
+  }
+  input[type="text"] {
+    padding: 10px;
+    font-size: 1em;
+    width: 200px;
+    border-radius: 5px;
+    border: none;
+    margin-top: 10px;
+  }
+  button {
+    padding: 10px 15px;
+    font-size: 1em;
+    margin-left: 10px;
+    border: none;
+    border-radius: 5px;
+    background: #ff5722;
+    color: white;
+    cursor: pointer;
+  }
+  #message {
+    margin-top: 15px;
+    font-weight: bold;
+    font-size: 1.2em;
+    min-height: 2em;
+  }
+  #nextBtn {
+    margin-top: 20px;
+    padding: 8px 14px;
+    background: #4caf50;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+<h1>Ridiculous Guess The Image</h1>
+
+<img id="partialImage" src="" alt="Guess the partial image" />
+<div>
+  <input type="text" id="guessInput" placeholder="Your guess here..." autocomplete="off" />
+  <button id="submitBtn">Guess</button>
+</div>
+
+<div id="message"></div>
+<img id="fullImage" src="" alt="Correct image" style="display:none" />
+
+<button id="nextBtn">Next</button>
+
+<script>
+  const questions = [
+    {
+      partial: "banana.jpg", 
+      full: "chimpanzini bananini.jpg"        
+    },
+    {
+      partial: "partial2.jpg",
+      full: "full2.jpg"
+    },
+    {
+      partial: "partial3.jpg",
+      full: "full3.jpg"
+    }
+  ];
+
+  let currentIndex = 0;
+
+  const partialImage = document.getElementById("partialImage");
+  const fullImage = document.getElementById("fullImage");
+  const guessInput = document.getElementById("guessInput");
+  const submitBtn = document.getElementById("submitBtn");
+  const message = document.getElementById("message");
+  const nextBtn = document.getElementById("nextBtn");
+
+  function loadQuestion(index) {
+    partialImage.src = questions[index].partial;
+    fullImage.style.display = "none";
+    fullImage.src = "";
+    guessInput.value = "";
+    message.textContent = "";
+    submitBtn.disabled = false;
+    guessInput.disabled = false;
+    nextBtn.style.display = "none";
+    guessInput.focus();
+  }
+
+  submitBtn.addEventListener("click", () => {
+    const guess = guessInput.value.trim();
+    if (!guess) {
+      message.textContent = "Please enter a guess!";
+      return;
+    }
+    message.textContent = "Wrong! The correct image is:";
+    fullImage.src = questions[currentIndex].full;
+    fullImage.style.display = "block";
+
+    submitBtn.disabled = true;
+    guessInput.disabled = true;
+    nextBtn.style.display = "inline-block";
+  });
+
+  nextBtn.addEventListener("click", () => {
+    if(currentIndex === questions.length - 1) {
+      // Last question: redirect to page6.html
+      window.location.href = "page6.html";
+    } else {
+      currentIndex++;
+      loadQuestion(currentIndex);
+    }
+  });
+
+  guessInput.addEventListener("keydown", e => {
+    if (e.key === "Enter") {
+      submitBtn.click();
+    }
+  });
+
+  loadQuestion(currentIndex);
+</script>
+
+</body>
+</html>

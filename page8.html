@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Rage Self-Rating</title>
+<style>
+  body {
+    background-color: #111;
+    color: #ffeb3b;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+    min-height: 100vh;
+    margin: 0;
+  }
+  h1 {
+    font-size: 3em;
+    margin-bottom: 10px;
+    text-align: center;
+    text-shadow: 0 0 8px #ffeb3b;
+  }
+  p {
+    max-width: 600px;
+    text-align: center;
+    font-size: 1.2em;
+    margin-bottom: 40px;
+    color: #fffde7dd;
+  }
+  .rage-images {
+    display: flex;
+    justify-content: center;
+    gap: 80px;
+    margin-bottom: 30px;
+  }
+  .rage-images img {
+    width: 220px;
+    height: 220px;
+    object-fit: contain;
+    user-select: none;
+    opacity: 0.4;
+    transition: opacity 0.5s ease, transform 0.5s ease, filter 0.5s ease;
+    filter: drop-shadow(0 0 2px transparent);
+  }
+  .rage-images img.active {
+    opacity: 1;
+    filter: drop-shadow(0 0 15px #ffeb3b);
+    transform: scale(1.15) rotate(-5deg);
+    animation: pulseGlow 2s infinite alternate;
+  }
+  @keyframes pulseGlow {
+    0% {
+      filter: drop-shadow(0 0 12px #ffeb3b);
+      transform: scale(1.15) rotate(-5deg);
+    }
+    100% {
+      filter: drop-shadow(0 0 22px #fbc02d);
+      transform: scale(1.25) rotate(5deg);
+    }
+  }
+  .slider-container {
+    width: 320px;
+  }
+  input[type=range] {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 12px;
+    border-radius: 10px;
+    background: linear-gradient(to right, #ffeb3b, #f57c00, #d32f2f);
+    outline: none;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 28px;
+    height: 28px;
+    background: #ffeb3b;
+    border-radius: 50%;
+    border: 2px solid #fbc02d;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  input[type=range]:hover::-webkit-slider-thumb {
+    background-color: #fbc02d;
+  }
+  input[type=range]::-moz-range-thumb {
+    width: 28px;
+    height: 28px;
+    background: #ffeb3b;
+    border-radius: 50%;
+    border: 2px solid #fbc02d;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  input[type=range]:hover::-moz-range-thumb {
+    background-color: #fbc02d;
+  }
+  .rating-text {
+    font-size: 1.6em;
+    margin-top: 24px;
+    font-weight: 600;
+    text-shadow: 0 0 8px #ffeb3b;
+    min-height: 1.8em;
+  }
+  /* Exit button styles */
+  #exitBtn {
+    margin-top: 30px;
+    padding: 10px 20px;
+    font-size: 1em;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    background-color: #f57c00;
+    color: #fff;
+    cursor: pointer;
+    box-shadow: 0 0 12px #f57c00aa;
+    transition: background-color 0.3s ease;
+  }
+  #exitBtn:hover {
+    background-color: #d35400;
+  }
+</style>
+</head>
+<body>
+
+<h1>Rate Your Rage Level</h1>
+<p>After enduring the full Patience-Ometer experience, how much did you rage? Drag the slider below to rate yourself!</p>
+
+<div class="rage-images">
+  <img id="imgLittle" src="top1.jpg" alt="Little Rage" title="Little Rage" />
+  <img id="imgMedium" src="top2.jpg" alt="Medium Rage" title="Medium Rage" />
+  <img id="imgMax" src="top3.jpg" alt="Max Rage" title="Max Rage" />
+</div>
+
+<div class="slider-container">
+  <input type="range" min="0" max="100" value="0" id="rageSlider" />
+</div>
+
+<div class="rating-text" id="ratingText">Rage Level: Little Rage</div>
+
+<button id="exitBtn">Exit</button>
+
+<script>
+  const slider = document.getElementById('rageSlider');
+  const ratingText = document.getElementById('ratingText');
+  const imgLittle = document.getElementById('imgLittle');
+  const imgMedium = document.getElementById('imgMedium');
+  const imgMax = document.getElementById('imgMax');
+  const exitBtn = document.getElementById('exitBtn');
+
+  function updateRageLevel(val) {
+    let text = 'Rage Level: ';
+    imgLittle.classList.remove('active');
+    imgMedium.classList.remove('active');
+    imgMax.classList.remove('active');
+
+    if (val < 33) {
+      text += 'Little Rage';
+      imgLittle.classList.add('active');
+    } else if (val < 66) {
+      text += 'Medium Rage';
+      imgMedium.classList.add('active');
+    } else {
+      text += 'MAX RAGE!';
+      imgMax.classList.add('active');
+    }
+    ratingText.textContent = text;
+  }
+
+  slider.addEventListener('input', () => {
+    updateRageLevel(+slider.value);
+  });
+
+  exitBtn.addEventListener('click', () => {
+    window.location.href = 'index.html';
+  });
+
+  // Initialize
+  updateRageLevel(+slider.value);
+</script>
+
+</body>
+</html>

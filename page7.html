@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Unwinnable Chicken Game</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: #111;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: white;
+      font-family: Arial, sans-serif;
+      user-select: none;
+    }
+    canvas {
+      background: #222;
+      border: 3px solid #fff;
+    }
+    #overlay {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0,0,0,0.85);
+      padding: 30px 40px;
+      border-radius: 12px;
+      text-align: center;
+      display: none;
+      z-index: 10;
+    }
+    #overlay h1 {
+      margin-bottom: 20px;
+      font-size: 36px;
+      color: #ff4444;
+    }
+    #overlay button {
+      background: #2196f3;
+      border: none;
+      color: white;
+      padding: 12px 20px;
+      font-size: 18px;
+      margin: 0 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    #overlay button:hover {
+      background: #0b7dda;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="gameCanvas" width="800" height="600"></canvas>
+
+  <div id="overlay">
+    <h1>You Failed!</h1>
+    <button id="retryBtn">Retry</button>
+    <button id="nextBtn">Next</button>
+  </div>
+
+  <script>
+    const canvas = document.getElementById("gameCanvas");
+    const ctx = canvas.getContext("2d");
+
+    const overlay = document.getElementById("overlay");
+    const retryBtn = document.getElementById("retryBtn");
+    const nextBtn = document.getElementById("nextBtn");
+
+    const chicken = {
+      x: canvas.width / 2 - 15,
+      y: canvas.height - 40,
+      width: 30,
+      height: 30,
+      color: "yellow"
+    };
+
+    const lanes = [];
+    const laneHeight = 60;
+    const carSpeed = 3;
+    const wrongWaySpeed = 10;
+    const numLanes = Math.floor(canvas.height / laneHeight);
+
+    let gameOver = false;
+
+    for (let i = 0; i < numLanes; i++) {
+      lanes.push([]);
+    }
+
+    function spawnCar(laneIndex, direction, speed) {
+      let car = {
+        width: 50,
+        height: 30,
+        y: laneIndex * laneHeight + (laneHeight - 30) / 2,
+        color: "red",
+        speed: speed,
+        direction: direction
+      };
+      if (direction === "right") {
+        car.x = -car.width;
+      } else {
+        car.x = canvas.width + car.width;
+      }
+      lanes[laneIndex].push(car);
+    }
+
+    function resetGame() {
+      chicken.x = canvas.width / 2 - 15;
+      chicken.y = canvas.height - 40;
+      lanes.forEach(lane => lane.length = 0);
+      gameOver = false;
+      overlay.style.display = "none";
+      gameLoop();
+    }
+
+    function update() {
+      if(gameOver) return;
+
+      // Spawn normal cars
+      for (let i = 1; i < numLanes - 1; i++) {
+        if (Math.random() < 0.02) {
+          spawnCar(i, "right", carSpeed); // normal direction only
+        }
+      }
+
+      // Spawn wrong-way car ONLY when chicken is about to reach final lane
+      if (chicken.y < laneHeight && lanes[0].length === 0) {
+        spawnCar(0, "left", wrongWaySpeed);
+      }
+
+      // Move cars
+      lanes.forEach((lane, laneIndex) => {
+        lane.forEach(car => {
+          if (car.direction === "right") {
+            car.x += car.speed;
+          } else {
+            car.x -= car.speed;
+          }
+        });
+
+        // Remove cars out of screen
+        lanes[laneIndex] = lane.filter(car => car.x > -car.width && car.x < canvas.width + car.width);
+      });
+
+      // Collision detection
+      lanes.forEach(lane => {
+        lane.forEach(car => {
+          if (
+            chicken.x < car.x + car.width &&
+            chicken.x + chicken.width > car.x &&
+            chicken.y < car.y + car.height &&
+            chicken.y + chicken.height > car.y
+          ) {
+            // Chicken hit - stop the game and show fail overlay
+            gameOver = true;
+            overlay.style.display = "block";
+          }
+        });
+      });
+    }
+
+    function drawChicken() {
+      ctx.fillStyle = chicken.color;
+      ctx.beginPath();
+      ctx.arc(chicken.x + chicken.width / 2, chicken.y + chicken.height / 2, chicken.width / 2, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = "orange";
+      ctx.beginPath();
+      ctx.moveTo(chicken.x + chicken.width / 2, chicken.y + chicken.height / 2);
+      ctx.lineTo(chicken.x + chicken.width / 2 + 10, chicken.y + chicken.height / 2 - 5);
+      ctx.lineTo(chicken.x + chicken.width / 2 + 10, chicken.y + chicken.height / 2 + 5);
+      ctx.closePath();
+      ctx.fill();
+    }
+
+    function drawCars() {
+      lanes.forEach(lane => {
+        lane.forEach(car => {
+          ctx.fillStyle = car.color;
+          ctx.fillRect(car.x, car.y, car.width, car.height);
+        });
+      });
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawChicken();
+      drawCars();
+    }
+
+    function gameLoop() {
+      update();
+      draw();
+      if(!gameOver){
+        requestAnimationFrame(gameLoop);
+      }
+    }
+
+    // Controls
+    window.addEventListener("keydown", e => {
+      if(gameOver) return;
+      const step = 30;
+      if (e.key === "ArrowUp") chicken.y -= step;
+      if (e.key === "ArrowDown") chicken.y += step;
+      if (e.key === "ArrowLeft") chicken.x -= step;
+      if (e.key === "ArrowRight") chicken.x += step;
+
+      // Boundaries
+      chicken.x = Math.max(0, Math.min(chicken.x, canvas.width - chicken.width));
+      chicken.y = Math.max(0, Math.min(chicken.y, canvas.height - chicken.height));
+    });
+
+    retryBtn.addEventListener("click", () => {
+      resetGame();
+    });
+
+    nextBtn.addEventListener("click", () => {
+      window.location.href = "page8.html";
+    });
+
+    gameLoop();
+  </script>
+</body>
+</html>
