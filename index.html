@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Patience-o-Meter — Login</title>
+<style>
+body {
+  background: linear-gradient(120deg, #1e3c72, #2a5298);
+  font-family: 'Segoe UI', sans-serif;
+  color: white;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+.container {
+  max-width: 500px;
+  margin: 50px auto;
+  background: rgba(255,255,255,0.08);
+  padding: 20px 30px;
+  border-radius: 15px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+  animation: fadeIn 1s ease-in;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.logo {
+  background: white;
+  color: #2a5298;
+  font-weight: bold;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 22px;
+}
+
+.h1 {
+  font-size: 36px;
+  font-weight: bold;
+}
+
+.small {
+  font-size: 18px;
+  opacity: 0.8;
+}
+
+.card h2 {
+  font-size: 28px;
+}
+
+.label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 20px;
+}
+
+.input {
+  width: 100%;
+  padding: 14px;
+  font-size: 20px;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+  margin-bottom: 8px;
+}
+
+.btn {
+  padding: 14px 20px;
+  font-size: 22px;
+  border: none;
+  border-radius: 8px;
+  background: #ff4757;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.3s ease;
+  position: relative;
+}
+
+.btn:hover {
+  transform: scale(1.1);
+  background: #e84118;
+}
+
+.footer {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 14px;
+  opacity: 0.6;
+}
+
+/* Multi-pointer visuals */
+.multi-pointer {
+  position: fixed;
+  width: 22px;
+  height: 30px;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%23ffffff' stroke='%23000000' stroke-width='0.5' d='M2 2 L18 12 L6 13 L10 22 Z'/></svg>");
+  background-size: contain;
+  background-repeat: no-repeat;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 9999;
+  filter: drop-shadow(0 6px 14px rgba(0,0,0,0.5));
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {opacity: 0; transform: translateY(20px);}
+  to {opacity: 1; transform: translateY(0);}
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div class="logo">P-O</div>
+    <div>
+      <div class="h1">Patience-o-Meter</div>
+      <div class="small">How patient are you? Let's find out.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Login</h2>
+    <p class="small">Type your name and email to start. (Don't worry — it looks normal... at first.)</p>
+
+    <label class="label">Username</label>
+    <input id="username" class="input" placeholder="Type your name" autocomplete="off">
+    <div class="small">Whatever you type will display a wrong name — that's part of the test.</div>
+
+    <label class="label">Email</label>
+    <input id="email" class="input" placeholder="you@example.com" autocomplete="off">
+
+    <div style="margin-top:14px" class="row">
+      <button id="submitBtn" class="btn">Submit</button>
+    </div>
+  </div>
+
+  <div class="footer">Made for fun — run locally in browser.</div>
+</div>
+
+<div id="pointerContainer"></div>
+
+<script>
+(function(){
+  // Multi-pointer setup
+  const pointerContainer = document.getElementById('pointerContainer');
+  const POINTER_COUNT = 3;
+  const pointers = [];
+  for(let i=0;i<POINTER_COUNT;i++){
+    const el = document.createElement('div');
+    el.className = 'multi-pointer';
+    pointerContainer.appendChild(el);
+    pointers.push({el, x: window.innerWidth/2, y: window.innerHeight/2});
+  }
+
+  let mouseX = window.innerWidth/2, mouseY = window.innerHeight/2;
+  document.addEventListener('mousemove', (e)=>{
+    mouseX = e.clientX; mouseY = e.clientY;
+  });
+
+  function updatePointers(){
+    pointers.forEach((p, idx) => {
+      const lag = 0.1 + idx * 0.05;
+      p.x += (mouseX - p.x) * lag;
+      p.y += (mouseY - p.y) * lag;
+      p.el.style.left = p.x + 'px';
+      p.el.style.top = p.y + 'px';
+    });
+    requestAnimationFrame(updatePointers);
+  }
+  updatePointers();
+
+  // Name scramble
+  const username = document.getElementById('username');
+  username.addEventListener('input', (e)=>{
+    const raw = e.target.value;
+    const corrupted = raw.split('').reverse().join('').replace(/[a-zA-Z]/g, c => String.fromCharCode(c.charCodeAt(0) + 1));
+    e.target.value = corrupted;
+  });
+
+  // Email reverse
+  const email = document.getElementById('email');
+  email.addEventListener('input', (e)=>{
+    const raw = e.target.value;
+    e.target.value = raw.split('').reverse().join('');
+  });
+
+  // Submit button runaway
+  const submitBtn = document.getElementById('submitBtn');
+  let runawayActive = false;
+
+  submitBtn.addEventListener('click', ()=>{
+    if(runawayActive) return;
+    runawayActive = true;
+
+    let endTime = Date.now() + 10000; // run away for 10s
+    function moveButton(){
+      if(Date.now() < endTime){
+        submitBtn.style.position = 'absolute';
+        submitBtn.style.left = Math.random() * (window.innerWidth - 150) + 'px';
+        submitBtn.style.top = Math.random() * (window.innerHeight - 70) + 'px';
+        submitBtn.style.transition = 'left 0.2s ease, top 0.2s ease';
+        requestAnimationFrame(moveButton);
+      } else {
+        runawayActive = false;
+        submitBtn.style.position = 'relative';
+        submitBtn.style.left = '0';
+        submitBtn.style.top = '0';
+        alert("You finally caught me! Moving to next page...");
+        // window.location.href = 'page2.html';
+      }
+    }
+    moveButton();
+  });
+
+})();
+</script>
+</body>
+</html>

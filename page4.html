@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Patience-o-Meter — IQ Test</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="header"><div class="logo">P-O</div><div><div class="h1">IQ Tester</div><div class="small">Now let’s test your IQ… or patience.</div></div></div>
+
+    <div class="card">
+      <h3>Game 1 — Guess the image</h3>
+      <div style="display:flex;gap:8px">
+        <div style="flex:1"><div style="height:120px;background:linear-gradient(135deg,#16202b,#0b1220);border-radius:8px;display:grid;place-items:center">IMG A</div></div>
+        <div style="flex:1"><div style="height:120px;background:linear-gradient(135deg,#10182a,#0b1220);border-radius:8px;display:grid;place-items:center">IMG B</div></div>
+        <div style="flex:1"><div style="height:120px;background:linear-gradient(135deg,#0e1724,#081219);border-radius:8px;display:grid;place-items:center">IMG C</div></div>
+      </div>
+      <div style="margin-top:10px">
+        <input id="guessInput" class="input" placeholder="Type your guess">
+        <div style="display:flex;gap:8px;margin-top:8px">
+          <button id="guessBtn" class="btn">Submit</button>
+          <button id="guessNext" class="btn ghost">Next</button>
+        </div>
+        <div id="guessMsg" class="caption small" style="margin-top:6px"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Game 2 — Spot the difference</h3>
+      <div style="display:flex;gap:8px">
+        <div style="flex:1"><div id="diffA" style="height:160px;background:linear-gradient(135deg,#17202b,#0b1220);border-radius:8px;display:grid;place-items:center">IMG LEFT</div></div>
+        <div style="flex:1"><div id="diffB" style="height:160px;background:linear-gradient(135deg,#0f1823,#08121a);border-radius:8px;display:grid;place-items:center">IMG RIGHT</div></div>
+      </div>
+      <div style="margin-top:10px">
+        <input id="diffInput" class="input" placeholder="Describe difference (if any)">
+        <div style="display:flex;gap:8px;margin-top:8px">
+          <button id="diffSubmit" class="btn">Submit</button>
+          <button id="diffNext" class="btn ghost">Next</button>
+        </div>
+        <div id="diffMsg" class="caption small" style="margin-top:6px"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Game 3 — Find errors in paragraph</h3>
+      <p id="flickerPara" style="line-height:1.5">This paragrahp contains some typos and mistakes. Try to find them all before the text starts flickering and becomes unreadable.</p>
+      <div style="display:flex;gap:8px;margin-top:8px">
+        <button id="paraCheck" class="btn">Next</button>
+      </div>
+    </div>
+
+    <div style="margin-top:12px" class="center">
+      <button id="toPage5" class="btn ghost">Finish & Move to final</button>
+    </div>
+
+    <div class="footer">Games are intentionally cheeky — you asked for mischief 😄</div>
+  </div>
+
+  <script src="script.js"></script>
+  <script>initPage('page4');</script>
+</body>
+</html>

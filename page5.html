@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Patience-o-Meter — Result</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="header"><div class="logo">P-O</div><div><div class="h1">Final Result</div><div class="small">Your patience profile</div></div></div>
+
+    <div class="card center">
+      <h2>Patience is loading...</h2>
+      <div class="progress-wrap" style="width:80%"><div id="finalProgress" class="progress"></div></div>
+      <div id="finalLabel" class="caption small" style="margin-top:8px">Calculating…</div>
+    </div>
+
+    <div class="card">
+      <h3>Pick an emoji that matches your patience</h3>
+      <div class="emojis">
+        <div class="emote" data-emo="calm">🙂</div>
+        <div class="emote" data-emo="meh">😐</div>
+        <div class="emote" data-emo="rage">😡</div>
+      </div>
+      <div id="selectedEmoji" class="caption small center" style="margin-top:10px"></div>
+      <div style="margin-top:12px" class="center">
+        <button id="exitBtnFinal" class="btn ghost">Have a nice day — Exit</button>
+      </div>
+    </div>
+
+    <div class="footer">Thanks for trying Patience-o-Meter. Use responsibly!</div>
+  </div>
+
+  <script src="script.js"></script>
+  <script>initPage('page5');</script>
+</body>
+</html>

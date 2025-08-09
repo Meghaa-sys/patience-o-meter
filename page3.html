@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Patience-o-Meter — Glitch</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="header"><div class="logo">P-O</div><div><div class="h1">Patience-o-Meter</div><div class="small">Looks like your display is busted...</div></div></div>
+
+    <div class="card" id="glitchCard">
+      <h2>System Error</h2>
+      <p class="small" id="glitchText">WARNING: Display malfunction detected. Green overlay engaged.</p>
+      <div style="height:220px;margin-top:12px;border-radius:8px;background:linear-gradient(180deg,#032 10%,#091 60%);display:grid;place-items:center;color:#042">
+        <div id="glitchCanvas" style="width:90%;height:90%;background:repeating-linear-gradient(45deg, rgba(0,255,0,0.03) 0 2px, transparent 2px 4px);border-radius:6px;display:grid;place-items:center;color:rgba(0,0,0,0.6)">GLITCH</div>
+      </div>
+
+      <div style="margin-top:12px">
+        <button id="exitBtn" class="btn">Press here to exit</button>
+      </div>
+    </div>
+
+    <div class="card" id="glitchLog" style="display:none;margin-top:12px">
+      <h3>System logs</h3>
+      <pre id="logArea" style="height:160px;overflow:auto;background:transparent;border-radius:6px;padding:8px;color:var(--muted)"></pre>
+    </div>
+
+    <div class="footer">After exiting the loop you'll be invited to continue if you have enough patience.</div>
+  </div>
+
+  <div id="phantomContainer"></div>
+
+<script src="script.js"></script>
+<script>initPage('page3');</script>
+</body>
+</html>
+

@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Patience-o-Meter — Cookies & Captcha</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="logo">P-O</div>
+      <div><div class="h1">Patience-o-Meter</div><div class="small">Step 2 — cookies and verification</div></div>
+    </div>
+
+    <div class="card">
+      <h2>Cookie Consent</h2>
+      <p class="small">We use cookies to improve your experience.</p>
+      <div style="margin-top:8px">
+        <button id="acceptCookies" class="btn">Accept Cookies</button>
+        <button id="declineCookies" class="btn ghost">Decline</button>
+      </div>
+      <div style="margin-top:12px" class="caption">Click accept to continue (we also have a joke).</div>
+    </div>
+
+    <div class="card" style="margin-top:12px" id="imageCard">
+      <h3>Profile photo</h3>
+      <div style="height:180px;background:linear-gradient(180deg,#071026,#0b1222);border-radius:10px;display:grid;place-items:center;color:var(--muted)">
+        <div style="width:160px;height:120px;background:linear-gradient(135deg,#0b1230,#1b2233);border-radius:8px;display:grid;place-items:center">IMAGE</div>
+      </div>
+
+      <div style="margin-top:12px">
+        <h3>Captcha verification</h3>
+        <canvas id="captchaCanvas" class="captcha-canvas"></canvas>
+        <div class="captcha-controls">
+          <input id="captchaInput" class="input" placeholder="Enter captcha (good luck)">
+          <button id="captchaBtn" class="btn">Verify</button>
+        </div>
+        <div class="small caption">If you can't read the captcha — that's the point.</div>
+      </div>
+
+      <div style="margin-top:12px;display:flex;gap:10px;align-items:center">
+        <div class="small">Navigation</div>
+        <div style="margin-left:auto;display:flex;gap:8px">
+          <button id="leftArrow" class="btn ghost">← Left</button>
+          <button id="rightArrow" class="btn ghost">Right →</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">Scroll to test reversed scroll on this page.</div>
+  </div>
+
+  <div id="phantomContainer"></div>
+
+<script src="script.js"></script>
+<script>initPage('page2');</script>
+</body>
+</html>
